@@ -1,0 +1,245 @@
+/* Sum Data Section Styles */
+
+.sum-data-section {
+  margin-top: 2rem;
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.sum-data-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+
+.sum-data-section__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0;
+  color: var(--text-primary);
+  text-align: right;
+}
+
+.sum-data-section__toggle {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+.sum-data-section__toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+}
+
+.sum-data-section__toggle:active {
+  transform: scale(0.95);
+}
+
+.sum-data-section__toggle svg {
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.sum-data-section__toggle.expanded svg {
+  transform: rotate(180deg);
+}
+
+.sum-data-section__content {
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+}
+
+.sum-data-section__content.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+
+.sum-data-section__content.expanded {
+  max-height: 2000px;
+  opacity: 1;
+  margin-top: 1.5rem;
+}
+
+.sum-data-section .table-wrapper {
+  overflow-x: auto;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.sum-data-section .global-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: white;
+}
+
+.sum-data-section .global-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.sum-data-section .global-table thead th {
+  padding: 0.875rem 1rem;
+  text-align: right;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.2px;
+}
+
+.sum-data-section .global-table thead th:first-child {
+  border-top-right-radius: 6px;
+}
+
+.sum-data-section .global-table thead th:last-child {
+  border-top-left-radius: 6px;
+}
+
+.sum-data-section .global-table tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease;
+}
+
+.sum-data-section .global-table tbody tr:hover {
+  background-color: #f8f9ff;
+}
+
+.sum-data-section .global-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.sum-data-section .global-table tbody td {
+  padding: 0.875rem 1rem;
+  text-align: right;
+  color: var(--text-primary);
+}
+
+/* Row Styles */
+.sum-row-header {
+  background: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 100%);
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: #64748b;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.sum-row-header td {
+  padding: 0.75rem 1rem !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+}
+
+.sum-data-section .global-table tbody .sum-row-header:hover {
+  background: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 100%) !important;
+}
+
+.sum-row-income {
+  background-color: #f0fdf4;
+  border-top: 2px solid #22c55e;
+}
+
+.sum-row-total {
+  background-color: #fef2f2;
+  border-top: 2px solid #ef4444;
+  font-weight: 600;
+}
+
+.sum-row-profit {
+  border-top: 3px solid #e2e8f0;
+  font-weight: 700;
+}
+
+.sum-row-profit-positive {
+  background: linear-gradient(to left, #f0fdf4 0%, #dcfce7 100%);
+  border-top-color: #22c55e;
+}
+
+.sum-row-profit-negative {
+  background: linear-gradient(to left, #fef2f2 0%, #fee2e2 100%);
+  border-top-color: #ef4444;
+}
+
+/* Label Styles */
+.sum-label-indent {
+  padding-right: 2rem !important;
+  font-weight: 400;
+  color: #64748b;
+}
+
+.sum-label-bold {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Value Styles */
+.sum-value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.sum-value-bold {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 1.05em;
+}
+
+.sum-value-positive {
+  color: #15803d;
+}
+
+.sum-value-negative {
+  color: #dc2626;
+}
+
+.sum-value-profit-positive {
+  color: #15803d;
+  font-size: 1.15em;
+}
+
+.sum-value-profit-negative {
+  color: #dc2626;
+  font-size: 1.15em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+  .sum-data-section .global-table {
+    font-size: 0.85rem;
+  }
+  
+  .sum-data-section .global-table thead th,
+  .sum-data-section .global-table tbody td {
+    padding: 0.75rem 0.875rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .sum-data-section {
+    padding: 1rem;
+  }
+  
+  .sum-data-section .global-table {
+    font-size: 0.8rem;
+  }
+  
+  .sum-data-section .global-table thead th,
+  .sum-data-section .global-table tbody td {
+    padding: 0.65rem 0.75rem;
+  }
+}
+
+

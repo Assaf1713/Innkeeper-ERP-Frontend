@@ -1,0 +1,58 @@
+.editable-cell__edit-mode {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.editable-cell__input {
+  padding: 4px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  flex: 1;
+  font-size: 14px;
+}
+
+.editable-cell__input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.editable-cell__display {
+  cursor: pointer;
+  padding: 4px;
+  min-height: 20px;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.editable-cell__display:hover {
+  background-color: var(--surface-2);
+}
+
+.editable-cell__edit-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.editable-cell__cancel-btn{
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.editable-cell__save-btn {
+  background-color: var(--surface-2);
+  color: var(--text-muted);
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  border: 1px solid var(--border);
+}

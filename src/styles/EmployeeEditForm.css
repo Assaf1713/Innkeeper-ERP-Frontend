@@ -1,0 +1,25 @@
+.employee-edit-form {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  background: white;
+}
+
+.employee-edit-form__title {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.employee-edit-form__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+.employee-edit-form__notes {
+  display: block;
+  font-size: 14px;
+  color: #ff4d4f;
+}

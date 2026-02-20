@@ -1,0 +1,141 @@
+.closed-event {
+  margin-top: 16px;
+}
+
+.closed-event__header {
+  padding: 12px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.closed-event__title {
+  font-weight: 700;
+}
+
+.closed-event__subtitle {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+.closed-event__card {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  background: #fff;
+}
+
+.card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.card__hint {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.card__meta {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.closed-event__time-toggle {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.closed-event__time-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.closed-event__time-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 10px 12px;
+}
+
+.closed-event__time-card--total {
+  border: 2px solid var(--primary);
+}
+
+.closed-event__time-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.closed-event__time-value {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.closed-event__requirements {
+  margin: 0;
+  padding-right: 18px;
+  opacity: 0.8;
+}
+
+.planned-shift-form {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.02);
+  margin-bottom: 12px;
+}
+
+.planned-shift-form__actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.planned-shifts-list {
+  display: grid;
+  gap: 8px;
+}
+
+.planned-shift-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.planned-shift-item__name {
+  font-weight: 700;
+}
+
+.planned-shift-item__meta {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.planned-shift-item__notes {
+  margin-top: 4px;
+  opacity: 0.8;
+  font-size: 12px;
+}
+
+.action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.closed-event__add-shift-btn {
+  margin-bottom: 10px;
+}
+

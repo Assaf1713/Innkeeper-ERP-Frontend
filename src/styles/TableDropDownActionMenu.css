@@ -1,0 +1,61 @@
+/* Container keeps the menu positioned relative to the phone number */
+.phone-menu-container {
+  position: relative;
+  display: inline-block;
+  opacity: 1 !important; /* Override parent row opacity */
+}
+
+/* The clickable phone number */
+.phone-number-trigger {
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.2s;
+  
+}
+
+.phone-number-trigger:hover {
+  color: #0056b3;
+}
+
+/* The dropdown menu box */
+.phone-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0; /* Aligns to the right side of the number */
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000; /* Ensures it floats above other table rows */
+  min-width: 180px;
+  padding: 8px 0;
+  margin-top: 4px;
+  animation: 0.2s fadeIn ease-in-out;
+  opacity: 1 !important; /* Override parent row opacity */
+}
+
+/* Individual menu buttons */
+.phone-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  text-align: right; /* RTL alignment for Hebrew */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: background-color 0.2s;
+  font-family: inherit;
+  opacity: 1 !important; /* Override parent row opacity */
+}
+
+.phone-menu-item:hover {
+  background-color: #f5f5f5;
+}
+
+.phone-menu-item:active {
+  background-color: #e9ecef;
+}

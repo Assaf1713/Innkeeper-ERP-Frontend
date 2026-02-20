@@ -1,0 +1,76 @@
+/* Leads Page Styles */
+
+
+
+.lead-row--converted {
+  background-color: var(--bg-muted, #f5f5f5);
+}
+
+.lead-row--lost td:not(:has(.lead-status-badge)) {
+  opacity: 0.35;
+  
+}
+
+
+.lead-status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.lead-status-badge--new {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.lead-status-badge--contacted {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.lead-status-badge--qualified {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.lead-status-badge--lost {
+  background-color: #000000;
+  color: #c62828;
+}
+
+.lead-status-badge--converted {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.ui-btn--mark_contacted {
+  background-color: #1976d2;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ui-btn--mark_contacted:hover {
+  background-color: #1565c0;
+}
+
+.ui-btn--mark_lost {
+  background-color: #c62828;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ui-btn--mark_lost:hover {
+  background-color: #b71c1c;
+}
+

@@ -1,0 +1,255 @@
+.settings-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  direction: rtl;
+}
+
+.settings-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.settings-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #101828;
+  margin: 0 0 8px 0;
+}
+
+.settings-subtitle {
+  font-size: 1rem;
+  color: #667085;
+  margin: 0;
+}
+
+.settings-loading,
+.settings-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: #667085;
+  font-size: 1.1rem;
+}
+
+.settings-container {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #eaecf0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Setting Row */
+.setting-row {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 24px;
+  padding: 20px 24px;
+  border-bottom: 1px solid #f2f4f7;
+  align-items: center;
+}
+
+.setting-row:last-child {
+  border-bottom: none;
+}
+
+.setting-row:hover {
+  background-color: #f9fafb;
+}
+
+.setting-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.setting-key {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #344054;
+}
+
+.setting-description {
+  font-size: 0.85rem;
+  color: #667085;
+  line-height: 1.4;
+}
+
+/* Setting Value */
+.setting-value {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.setting-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: #f9fafb;
+  border: 1px solid #eaecf0;
+  border-radius: 8px;
+  cursor: pointer;
+  min-width: 300px;
+}
+
+.setting-display:hover {
+  background: #f2f4f7;
+  border-color: #d0d5dd;
+}
+
+.setting-current-value {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #101828;
+  flex: 1;
+}
+
+.setting-edit-icon {
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0.6;
+}
+
+.setting-display:hover .setting-edit-icon {
+  opacity: 1;
+}
+
+/* Edit Mode */
+.setting-edit-mode {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.setting-input {
+  flex: 1;
+  width: 100%;
+  border-radius: 10px;
+  border: 1.5px solid #cbd5e1;
+  background: white;
+  padding: 11px 14px;
+  font-size: 15px;
+  color: #0f172a;
+  font-family: inherit;
+  min-width: 200px;
+}
+
+.setting-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+}
+
+.setting-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.setting-checkbox-label:hover {
+  background: #f2f4f7;
+}
+
+.setting-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.setting-checkbox-label span {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #344054;
+}
+
+/* Action Buttons */
+.setting-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.setting-btn {
+  padding: 10px 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.setting-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.setting-btn-save {
+  background: linear-gradient(to bottom, #4F46E5, #4338ca);
+  border-color: #4338ca;
+  color: white;
+  box-shadow: 0 1px 3px rgba(79, 70, 229, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.setting-btn-save:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #4338ca, #3730a3);
+  border-color: #3730a3;
+  box-shadow: 0 4px 8px rgba(79, 70, 229, 0.35);
+}
+
+.setting-btn-cancel {
+  background: white;
+  color: #475569;
+  border-color: #cbd5e1;
+}
+
+.setting-btn-cancel:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .settings-page {
+    padding: 24px 16px;
+  }
+
+  .setting-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .setting-display,
+  .setting-input {
+    min-width: 100%;
+  }
+
+  .setting-edit-mode {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .setting-actions {
+    width: 100%;
+  }
+
+  .setting-btn {
+    flex: 1;
+  }
+}

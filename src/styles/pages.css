@@ -1,0 +1,23 @@
+.page {
+  display: block;
+}
+
+.page-title {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+}
+.page-content {
+  margin-top: 16px;
+  direction: rtl;
+}
+
+.table-info {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}

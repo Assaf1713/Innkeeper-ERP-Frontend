@@ -1,0 +1,42 @@
+.customer-assignment {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  background: var(--bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.customer-assignment__header {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.customer-assignment__row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.customer-assignment__input {
+  flex: 1;
+}
+
+.customer-assignment__title {
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.customer-assignment__subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.customer-assignment__field {
+  margin-bottom: 12px;
+}
+
+.customer-assignment__actions {
+  display: flex;
+  gap: 8px;
+}

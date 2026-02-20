@@ -1,0 +1,26 @@
+.employee-page__section {
+  margin-bottom: 32px;
+}
+
+.employee-page__section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.employee-page__error {
+  padding: 12px;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: var(--radius-sm);
+  color: #c33;
+  font-size: 14px;
+}
+
+.employee-inactive-label {
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: #ff4d4f;
+}
+

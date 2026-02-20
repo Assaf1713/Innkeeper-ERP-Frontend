@@ -1,0 +1,74 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--spacing-md) var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.brand {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.2px;
+}
+
+.nav {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: var(--text);
+  border-radius: var(--radius);
+  transition: background 120ms ease;
+}
+
+.nav-link:hover {
+  background: var(--accent);
+}
+
+.nav-link-active {
+  background: var(--accent-strong);
+  font-weight: 600;
+}
+
+/* setting action - should be on the left side of the header */
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.header-actions .nav-link {
+  font-size: 1.3rem;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.header-actions .nav-link:hover {
+  background: var(--accent);
+}
+
+.header-actions .nav-link-active {
+  background: var(--accent-strong);
+}
+

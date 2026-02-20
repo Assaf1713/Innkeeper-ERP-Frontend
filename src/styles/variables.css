@@ -1,0 +1,13 @@
+:root{
+  --bg: #ffffff;
+  --text: #1f2328;
+  --muted: #666;
+  --border: #e5e7eb;
+  --accent: #f3f4f6;
+  --accent-strong: #e5e7eb;
+  --radius: 12px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --content-max: 1200px;
+}
