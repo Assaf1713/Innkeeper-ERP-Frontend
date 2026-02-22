@@ -22,7 +22,7 @@ import UnavailableDates from "./components/UnavailableDates";
 import Settings from "./pages/Settings";
 import { AlertProvider } from "./contexts/AlertContext";
 import { AuthProvider } from "./contexts/AuthContext";
-import Login from "./pages/login";
+import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
