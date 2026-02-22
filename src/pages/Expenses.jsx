@@ -36,7 +36,8 @@ export default function Expenses() {
       // Filter by search query
       if (
         searchQuery &&
-        !expense.name.toLowerCase().includes(searchQuery.toLowerCase())
+        !expense.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
+        !expense.supplier.toLowerCase().includes(searchQuery.toLowerCase())
       ) {
         return false;
       }

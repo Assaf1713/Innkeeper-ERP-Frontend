@@ -9,6 +9,7 @@ import FilterPanel, {
   FilterGuestCountRange,
   FilterSelect,
   FilterChooseEntryLimit,
+  FilterSearch,
   FilterActions,
 } from "../components/FilterPanel";
 import SumDataSection from "../components/SumDataSection";
@@ -23,18 +24,19 @@ export default function EventsMade() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { showError } = useAlert();
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Date range filters
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  
+
   // Guest count range filters
   const [minGuests, setMinGuests] = useState("");
   const [maxGuests, setMaxGuests] = useState("");
-  
+
   // Event type filter
   const [selectedEventType, setSelectedEventType] = useState("all");
-  
+
   // Entry limit filter
   const [entryLimit, setEntryLimit] = useState("20");
 
@@ -71,7 +73,7 @@ export default function EventsMade() {
     const minGuestCount = minGuests ? parseInt(minGuests) : null;
     const maxGuestCount = maxGuests ? parseInt(maxGuests) : null;
 
-    // Filter event actuals by event date snapshot, guest count, and event type
+    // Filter event actuals by event date snapshot, guest count, event type, and search query
     let filteredActuals = eventActuals.filter((actual) => {
       // Date filter
       if (start || end) {
@@ -79,35 +81,61 @@ export default function EventsMade() {
         if (start && eventDate < start) return false;
         if (end && eventDate > end) return false;
       }
-      
+
       // Guest count filter
       if (minGuestCount !== null || maxGuestCount !== null) {
         const guestCount = actual.guestCountSnapshot;
         if (minGuestCount !== null && guestCount < minGuestCount) return false;
         if (maxGuestCount !== null && guestCount > maxGuestCount) return false;
       }
-      
+
       // Event type filter
       if (selectedEventType && selectedEventType !== "all") {
         const eventTypeCode = actual.event?.eventType?.code;
         if (eventTypeCode !== selectedEventType) return false;
       }
-      
+
+      // Search query filter
+      if (searchQuery) {
+        const lowerCaseQuery = searchQuery.toLowerCase();
+        if (
+          !actual.event?.customerName?.toLowerCase().includes(lowerCaseQuery) &&
+          !actual.event?.eventNumber?.toString().includes(lowerCaseQuery)
+        ) {
+          return false;
+        }
+      }
+
       return true;
     });
 
     return filteredActuals;
-  }, [eventActuals, startDate, endDate, minGuests, maxGuests, selectedEventType]);
+  }, [
+    eventActuals,
+    startDate,
+    endDate,
+    minGuests,
+    maxGuests,
+    selectedEventType,
+    searchQuery,
+  ]);
+
+
 
   // Apply entry limit to filtered data
   const displayedData = useMemo(() => {
     if (entryLimit === "all") {
-      return filteredData.sort((a,b) => new Date(b.eventDateSnapshot) - new Date(a.eventDateSnapshot));
+      return filteredData.sort(
+        (a, b) => new Date(b.eventDateSnapshot) - new Date(a.eventDateSnapshot),
+      );
     }
     const limit = parseInt(entryLimit);
-    return filteredData.sort((a,b) => new Date(b.eventDateSnapshot) - new Date(a.eventDateSnapshot)).slice(0, limit);
+    return filteredData
+      .sort(
+        (a, b) => new Date(b.eventDateSnapshot) - new Date(a.eventDateSnapshot),
+      )
+      .slice(0, limit);
   }, [filteredData, entryLimit]);
-
 
   const handleClearFilters = () => {
     setStartDate("");
@@ -171,17 +199,30 @@ export default function EventsMade() {
           options={eventTypeOptions}
           label="סוג אירוע"
         />
+        <FilterSearch
+          value={searchQuery}
+          onChange={setSearchQuery}
+          placeholder="חפש לפי שם לקוח או מספר אירוע..."
+          label="חיפוש אירוע"
+        />
         <FilterChooseEntryLimit
           value={entryLimit}
           onChange={setEntryLimit}
           label="מספר רשומות להצגה"
         />
-          <FilterActions
-            onClear={handleClearFilters}
-            clearDisabled={selectedEventType === "all" && !startDate && !endDate && !minGuests && !maxGuests}
-          />
+        <FilterActions
+          onClear={handleClearFilters}
+          clearDisabled={
+            selectedEventType === "all" &&
+            !startDate &&
+            !endDate &&
+            !minGuests &&
+            !maxGuests &&
+            !searchQuery
+          }
+        />
       </FilterPanel>
-      
+
       {filteredData.length === 0 ? (
         <div className="table-info">
           לא נמצאו אירועים התואמים את הקריטריונים שנבחרו.
@@ -189,7 +230,8 @@ export default function EventsMade() {
       ) : (
         <>
           <div className="table-info">
-            מציג {displayedData.length} אירועים מתוך {filteredData.length} אירועים מסוננים ({eventActuals.length} סה״כ)
+            מציג {displayedData.length} אירועים מתוך {filteredData.length}{" "}
+            אירועים מסוננים ({eventActuals.length} סה״כ)
           </div>
 
           {/* Panel 2: Summary Data Section */}

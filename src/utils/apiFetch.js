@@ -12,12 +12,21 @@ const BASE_URL = import.meta.env.VITE_API_URL || '';
 export const apiFetch = async (endpoint, options = {}) => {
   // 2. Get the token from localStorage
   const token = localStorage.getItem('token');
+  const isFormData = options.body instanceof FormData;
 
   // 3. Setup default headers
   const headers = {
-    'Content-Type': 'application/json',
     ...options.headers, // Allow overriding headers if necessary
   };
+
+  if (!isFormData && !headers['Content-Type'] && !headers['content-type']) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  if (isFormData) {
+    delete headers['Content-Type'];
+    delete headers['content-type'];
+  }
 
   // 4. Inject the Authorization header if a token exists
   if (token) {
