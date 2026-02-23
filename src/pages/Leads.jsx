@@ -5,9 +5,14 @@ import NewEventModal from "../components/forms/NewEventModal.jsx";
 import EditLeadModal from "../components/forms/EditLeadModal.jsx";
 import NewLeadModal from "../components/forms/NewLeadModal.jsx";
 import TableDropDownActionMenu from "../components/TableDropDownActionMenu.jsx";
-import { fetchLeads, updateLead, createLead, deleteLead } from "../api/leadsApi.js";
-import {fetchUnavailableDates } from "../api/unavailableDatesApi.js";
-import {fetchEventById, fetchClosedDates} from "../api/eventsApi.js";
+import {
+  fetchLeads,
+  updateLead,
+  createLead,
+  deleteLead,
+} from "../api/leadsApi.js";
+import { fetchUnavailableDates } from "../api/unavailableDatesApi.js";
+import { fetchEventById, fetchClosedDates } from "../api/eventsApi.js";
 import { useAlert } from "../hooks/useAlert";
 import FilterPanel, {
   FilterSearch,
@@ -15,7 +20,7 @@ import FilterPanel, {
   FilterSelect,
   FilterChooseEntryLimit,
 } from "../components/FilterPanel";
-import { useNavigate } from "react-router-dom";  
+import { useNavigate } from "react-router-dom";
 import "../styles/Leads.css";
 import { apiFetch } from "../utils/apiFetch";
 
@@ -78,32 +83,46 @@ export default function Leads() {
   };
 
   const findDayOfWeek = (dateString) => {
-    const daysOfWeek = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
+    const daysOfWeek = [
+      "ראשון",
+      "שני",
+      "שלישי",
+      "רביעי",
+      "חמישי",
+      "שישי",
+      "שבת",
+    ];
     const date = new Date(dateString);
     if (Number.isNaN(date.getTime())) return "";
     return daysOfWeek[date.getDay()];
-  }
+  };
 
   const displayDate = (dateString) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
     return `${date.toLocaleDateString("he-IL")} (${findDayOfWeek(dateString)})`;
-  }
+  };
 
   const isDateUnavailable = (eventDate) => {
     if (!eventDate || unavailableDates.length === 0) return false;
     const eventDateStr = new Date(eventDate).toDateString();
     return unavailableDates.some(
-      (unavailableDate) => new Date(unavailableDate.blockedDate).toDateString() === eventDateStr
+      (unavailableDate) =>
+        new Date(unavailableDate.blockedDate).toDateString() === eventDateStr,
     );
   };
 
   const isDateClosed = (eventDate) => {
     if (!eventDate || closedDates.length === 0) return false;
     const eventDateStr = new Date(eventDate).toDateString();
-    return closedDates.some(
-      (closedDate) => new Date(closedDate).toDateString() === eventDateStr
+    const sameDayClosedCount = closedDates.reduce(
+      (count, closedDate) =>
+        new Date(closedDate).toDateString() === eventDateStr
+          ? count + 1
+          : count,
+      0,
     );
+    return sameDayClosedCount > 1;
   };
 
   useEffect(() => {
@@ -111,7 +130,13 @@ export default function Leads() {
       setLoading(true);
       try {
         const data = await fetchLeads();
-        setLeads(data);
+        // sorting leads by status (Lost at the end) and then by creation date (newest first)
+        const sortedData = data.sort((a, b) => {
+          if (a.status === "Lost" && b.status !== "Lost") return 1;
+          if (a.status !== "Lost" && b.status === "Lost") return -1;
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+        setLeads(sortedData);
       } catch (error) {
         showError("טעות בטעינת הלידים: ");
       } finally {
@@ -123,7 +148,6 @@ export default function Leads() {
       try {
         const data = await fetchUnavailableDates();
         setUnavailableDates(data);
-        
       } catch (error) {
         showError("טעות בטעינת התאריכים החסומים: ");
       }
@@ -191,7 +215,13 @@ export default function Leads() {
   const handleLeadCreation = async (newLeadData) => {
     try {
       const newLead = await createLead(newLeadData);
-      setLeads((prev) => [newLead, ...prev]);
+      setLeads((prev) =>
+        [newLead, ...prev].sort((a, b) => {
+          if (a.status === "Lost" && b.status !== "Lost") return 1;
+          if (a.status !== "Lost" && b.status === "Lost") return -1;
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        }),
+      );
       setShowNewLeadModal(false);
       showSuccess("הליד נוצר בהצלחה");
     } catch (err) {
@@ -216,7 +246,7 @@ export default function Leads() {
     }
   };
 
-  // After creating event, update lead status to "Converted"
+  // After creating event, update lead status to "Qualified" and navigate to the new event's page
   const handleEventCreated = async (newEvent) => {
     setIsModalOpen(false);
     setSelectedLead(null);
@@ -258,7 +288,13 @@ export default function Leads() {
     try {
       await updateLead(leadId, { status: newStatus });
       setLeads((prev) =>
-        prev.map((l) => (l._id === leadId ? { ...l, status: newStatus } : l)),
+        prev
+          .map((l) => (l._id === leadId ? { ...l, status: newStatus } : l))
+          .sort((a, b) => {
+            if (a.status === "Lost" && b.status !== "Lost") return 1;
+            if (a.status !== "Lost" && b.status === "Lost") return -1;
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          }),
       );
       showSuccess("סטטוס הליד עודכן בהצלחה!");
     } catch (error) {
@@ -271,20 +307,17 @@ export default function Leads() {
       showError("לליד זה אין אירוע מקושר.");
       return;
     }
-    try{
+    try {
       const response = await fetchEventById(lead.relatedEvent);
-      if(response && response.event && response.event._id){
+      if (response && response.event && response.event._id) {
         navigate(`/events/${response.event._id}`);
-      }
-      else{
+      } else {
         showError("לא נמצא אירוע מקושר לליד זה");
       }
-    }catch(error){
+    } catch (error) {
       showError("שגיאה בטעינת האירוע המקושר - יתכן והאירוע אינו קיים עוד");
     }
-  }
-
-  
+  };
 
   if (loading) return <div className="page-loading">טוען...</div>;
 
@@ -368,10 +401,26 @@ export default function Leads() {
                         ? "lead-row--lost"
                         : ""
                   }
-                  style={isDateUnavailable(lead.eventDate)  ? { border: "3px solid red", backgroundColor: "rgba(255, 0, 0, 0.1)" } :
-                   isDateClosed(lead.eventDate) ? { border: "3px solid orange", backgroundColor: "rgba(255, 165, 0, 0.1)" } 
-                   : {}}
-                  title={isDateUnavailable(lead.eventDate) ? "תאריך האירוע הוגדר במערכת כחסום" : isDateClosed(lead.eventDate) ? "יש לפחות אירוע אחד סגור כבר ביום הזה" : ""}
+                  style={
+                    isDateUnavailable(lead.eventDate)
+                      ? {
+                          border: "3px solid red",
+                          backgroundColor: "rgba(255, 0, 0, 0.1)",
+                        }
+                      : isDateClosed(lead.eventDate)
+                        ? {
+                            border: "3px solid orange",
+                            backgroundColor: "rgba(255, 165, 0, 0.1)",
+                          }
+                        : {}
+                  }
+                  title={
+                    isDateUnavailable(lead.eventDate)
+                      ? "תאריך האירוע הוגדר במערכת כחסום"
+                      : isDateClosed(lead.eventDate)
+                        ? "יש לפחות אירוע אחד סגור כבר ביום הזה"
+                        : ""
+                  }
                 >
                   <td>
                     <TableDropDownActionMenu
@@ -386,8 +435,9 @@ export default function Leads() {
                       statusOptions={[
                         { value: "Contacted", label: "נוצר קשר" },
                         { value: "Qualified", label: "אירוע נוצר במערכת" },
+                        { value: "Converted", label: "הומר" },
                         { value: "Lost", label: "אבוד" },
-                        {value: "deleteLead", label: "מחק"}
+                        { value: "deleteLead", label: "מחק" },
                       ]}
                       onStatusChange={(newStatus) =>
                         handleStatusChange(lead._id, newStatus)
@@ -426,21 +476,24 @@ export default function Leads() {
                         </button>
                       )}
 
-                      {(lead.status === "New" || lead.status === "Contacted") && !lead.relatedEvent ? (
-                          <button
-                            className="global-table__btn ui-btn--edit_item"
-                            onClick={() => handleConvertClick(lead)}
-                          >
-                            צור אירוע
-                          </button>
-                        ) : (lead.status === "Qualified" || lead.status === "Contacted") && lead.relatedEvent ? (
-                          <button
-                            className="global-table__btn ui-btn--edit_item"
-                            onClick={() => handleLinkToEvent(lead)}
-                          >
-                            קישור לאירוע
-                          </button>
-                        ) : null}
+                      {(lead.status === "New" || lead.status === "Contacted") &&
+                      !lead.relatedEvent ? (
+                        <button
+                          className="global-table__btn ui-btn--edit_item"
+                          onClick={() => handleConvertClick(lead)}
+                        >
+                          צור אירוע
+                        </button>
+                      ) : (lead.status === "Qualified" ||
+                          lead.status === "Contacted") &&
+                        lead.relatedEvent ? (
+                        <button
+                          className="global-table__btn ui-btn--edit_item"
+                          onClick={() => handleLinkToEvent(lead)}
+                        >
+                          קישור לאירוע
+                        </button>
+                      ) : null}
                     </div>
                   </td>
                 </tr>

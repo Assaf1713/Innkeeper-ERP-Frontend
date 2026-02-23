@@ -19,7 +19,10 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="header-inner">
-        <h2 className="brand">INNKEEPER SYSTEM</h2>
+        <div className="logo-container">
+          <img src="/logo_text.png" alt="Vento OS Logo" className="logo-image" />
+        </div>
+
         <nav className="nav">
           <NavLink to="/" className={linkClass} end>דף הבית </NavLink>
           <NavLink to="/leads" className={linkClass}>לידים</NavLink>

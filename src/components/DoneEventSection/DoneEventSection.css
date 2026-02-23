@@ -20,6 +20,17 @@
   direction: rtl;
 }
 
+.done-event__top-cards {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.done-event__card--top {
+  margin-top: 0;
+}
+
 .actions-bar {
   display: flex;
   justify-content: space-between;
@@ -83,6 +94,7 @@
 
 @media (max-width: 900px) {
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .done-event__top-cards { grid-template-columns: 1fr; }
 }
 
 
@@ -168,5 +180,5 @@
 }
 
 .ice-expenses-input .ui-control {
-  width: 120px;
+  width: 220px;
 }

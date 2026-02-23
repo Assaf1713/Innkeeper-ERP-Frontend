@@ -1,8 +1,12 @@
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
 export default function AdminHeader() {
   const linkClass = ({ isActive }) =>
     isActive ? 'nav-link nav-link-active' : 'nav-link';
+
+  const { user } = useAuth();
+  const isSuperAdmin = user?.role === 'SUPER_ADMIN';
 
   return (
     <header className="site-header">
@@ -16,10 +20,20 @@ export default function AdminHeader() {
           <NavLink to="/admin/reports" className={linkClass}>דוחות</NavLink>
           <NavLink to="/admin/unavailableDates" className={linkClass}>תאריכים חסומים</NavLink>
         </nav>
-                <div className="header-actions">
-          <NavLink to="/admin/settings" className="nav-link" title="הגדרות מערכת">
-            ⚙️
-          </NavLink>
+        <div className="header-actions">
+          {isSuperAdmin ? (
+            <NavLink to="/admin/settings" className="nav-link" title="הגדרות מערכת">
+              ⚙️
+            </NavLink>
+          ) : (
+            <span
+              className="nav-link nav-link-disabled"
+              title="הגישה מותרת לסופר אדמין בלבד"
+              aria-disabled="true"
+            >
+              ⚙️
+            </span>
+          )}
         </div>
       </div>
     </header>

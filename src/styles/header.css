@@ -15,6 +15,21 @@
   gap: var(--spacing-lg);
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.logo-image {
+  max-width: 80px;
+  transition: transform 180ms ease, filter 220ms ease;
+}
+
+.logo-image:hover {
+  transform: scale(1.12);
+}
+
 .brand {
   margin: 0;
   font-size: 18px;
@@ -70,5 +85,11 @@
 
 .header-actions .nav-link-active {
   background: var(--accent-strong);
+}
+
+.header-actions .nav-link-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 

@@ -9,11 +9,11 @@ export default function DoneEventSection({
   employees,
   plannedShifts,
   iceExpenses,
+  carType,
 
   wageShifts,
   generalExpenses,
   expenseTypes,
-  
 
   onCreateShift,
   onUpdateShift,
@@ -25,16 +25,14 @@ export default function DoneEventSection({
   onDeleteGeneralExpense,
   onCreateExpenseType,
   onUpdateIceExpenses,
+  onUpdateCarType,
 
-  
   inventoryProducts,
-  alcoholExpenses ,
+  alcoholExpenses,
   onUpsertAlcoholExpense,
   onDeleteAlcoholExpense,
   onSaveActuals,
- 
-}){
-
+}) {
   const [saving, setSaving] = useState(false);
 
   const handleSaveActuals = async () => {
@@ -48,10 +46,6 @@ export default function DoneEventSection({
   };
 
   // create event actual object for the first time if not exists
-
-
-
-
 
   return (
     <section className="done-event">
@@ -67,7 +61,20 @@ export default function DoneEventSection({
         wageShifts={wageShifts}
         generalExpenses={generalExpenses}
         alcoholExpenses={alcoholExpenses}
-        iceExpenses ={iceExpenses}
+        iceExpenses={iceExpenses}
+      />
+
+      <GeneralExpensesCard
+        eventId={event?._id}
+        expenseTypes={expenseTypes}
+        generalExpenses={generalExpenses}
+        iceExpenses={iceExpenses}
+        carType={carType}
+        onCreate={onCreateGeneralExpense}
+        onDelete={onDeleteGeneralExpense}
+        onCreateExpenseType={onCreateExpenseType}
+        onUpdateIceExpenses={onUpdateIceExpenses}
+        onUpdateCarType={onUpdateCarType}
       />
 
       <WageShiftsCard
@@ -82,17 +89,6 @@ export default function DoneEventSection({
         MarkAllAsPaid={MarkAllAsPaid}
       />
 
-      <GeneralExpensesCard
-        eventId={event?._id}
-        expenseTypes={expenseTypes}
-        generalExpenses={generalExpenses}
-        iceExpenses={iceExpenses}
-        onCreate={onCreateGeneralExpense}
-        onDelete={onDeleteGeneralExpense}
-        onCreateExpenseType={onCreateExpenseType}
-        onUpdateIceExpenses={onUpdateIceExpenses}
-      />
-
       <AlcoholExpensesCard
         eventId={event?._id}
         inventoryProducts={inventoryProducts}
@@ -100,7 +96,7 @@ export default function DoneEventSection({
         onUpsert={onUpsertAlcoholExpense}
         onDelete={onDeleteAlcoholExpense}
       />
-       <div className="done-event__card">
+      <div className="done-event__card">
         <div className="card__header">
           <h3>שמירת נתוני ביצוע</h3>
         </div>

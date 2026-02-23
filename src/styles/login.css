@@ -1,8 +1,15 @@
+
+
 .login-page {
-  min-height: 100%;
+  min-height: 75vh;
   display: grid;
   place-items: center;
   padding: 24px;
+}
+
+
+.login-logo-image {
+  max-width: 400px;
 }
 
 .login-card {
@@ -11,13 +18,15 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
-  padding: 20px;
+  padding: 40px;
+  
 }
 
 .login-title {
   margin: 0 0 8px;
   font-size: 1.5rem;
   color: var(--text);
+  text-align: center;
 }
 
 .login-form {
@@ -28,4 +37,22 @@
 
 .login-submit-btn {
   width: 100%;
+}
+
+.login-footer-spacer {
+  margin-top: 32px;
+}
+
+.login-footer {
+  margin-top: 24px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.login-footer-hint {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-align: center;
 }

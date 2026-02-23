@@ -33,8 +33,12 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
   };
 
+  const isSuperAdmin  = (user) => {
+    return user.role === 'SUPER_ADMIN';
+  }
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, token, login, logout, loading, isSuperAdmin }}>
       {children}
     </AuthContext.Provider>
   );

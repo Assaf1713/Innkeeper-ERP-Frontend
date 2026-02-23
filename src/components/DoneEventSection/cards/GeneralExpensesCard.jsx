@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useMemo, useState } from "react";
 import ExpenseTypeCombobox from "../../ComboBox/ExpenseTypeCombobox";
 import "../DoneEventSection.css";
@@ -11,7 +10,9 @@ export default function GeneralExpensesCard({
   onDelete,
   onCreateExpenseType,
   onUpdateIceExpenses,
+  onUpdateCarType,
   iceExpenses = 0,
+  carType = "transporter",
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -24,6 +25,7 @@ export default function GeneralExpensesCard({
   });
 
   const [iceAmount, setIceAmount] = useState(iceExpenses);
+  const [selectedCarType, setSelectedCarType] = useState(carType || "transporter");
   
 
   const total = useMemo(() => {
@@ -70,6 +72,15 @@ export default function GeneralExpensesCard({
       console.error("Failed to update ice expenses:", error);
     }
   };
+
+  const handleSetCarType = async () => {
+    if (!onUpdateCarType) return;
+    try {
+      await onUpdateCarType(eventId, selectedCarType);
+    } catch (error) {
+      console.error("Failed to update car type:", error);
+    }
+  };
       
       
   
@@ -89,32 +100,60 @@ export default function GeneralExpensesCard({
 
   return (
     <>
-    <div className="done-event__card"> 
-          <div className="card__header">
-      <h3>הוצאות קרח</h3>
-    </div>
-    
-    <div className="ice-section">
-      <div className="ice-expenses-input">
-      
-        <input
-          className="ui-control"
-          type="text"
-          value={iceAmount}
-          onChange={(e) => setIceAmount(e.target.value)}
-          placeholder="0"
-        />
-        <button
-          className="ui-btn ui-btn--primary"
-          type="button"
-          onClick={handleSetIceExpenses}
-        >
-          עדכן
-        </button>
+    <div className="done-event__top-cards">
+      <div className="done-event__card done-event__card--top">
+        <div className="card__header">
+          <h3>הוצאות קרח</h3>
+        </div>
+
+        <div className="ice-section">
+          <div className="ice-expenses-input">
+            <input
+              className="ui-control"
+              type="text"
+              value={iceAmount}
+              onChange={(e) => setIceAmount(e.target.value)}
+              placeholder="0"
+            />
+            <button
+              className="ui-btn ui-btn--primary"
+              type="button"
+              onClick={handleSetIceExpenses}
+            >
+              עדכן
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="done-event__card done-event__card--top">
+        <div className="card__header">
+          <h3> איזה רכב יצא לאירוע </h3>
+        </div>
+
+        <div className="ice-section">
+          <div className="ice-expenses-input">
+            <select
+              className="ui-control"
+              value={selectedCarType}
+              onChange={(e) => setSelectedCarType(e.target.value)}
+            >
+              <option value="transporter">טרנספורטר</option>
+              <option value="mazda">מאזדה</option>
+              <option value="both">שניהם</option>
+            </select>
+            <button
+              className="ui-btn ui-btn--primary"
+              type="button"
+              onClick={handleSetCarType}
+            >
+              עדכן רכב
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
-    </div>
     <div className="done-event__card">
 
 

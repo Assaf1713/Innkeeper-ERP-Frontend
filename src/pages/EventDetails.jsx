@@ -35,6 +35,7 @@ export default function EventDetails() {
   const [alcoholExpenses, setAlcoholExpenses] = useState([]);
   const [inventoryProducts, setInventoryProducts] = useState([]);
   const [iceExpenses, setIceExpenses] = useState(0);
+  const [carType, setCarType] = useState("transporter");
   const [customer, setCustomer] = useState(null);
   const [settings, setSettings] = useState(null);
 
@@ -169,6 +170,7 @@ export default function EventDetails() {
         setAlcoholExpenses(aeData.alcoholExpenses);
         setInventoryProducts(ipData.inventoryProducts);
         setIceExpenses(eaData.eventActual?.iceExpense || 0);
+        setCarType(eaData.eventActual?.carType ?? "transporter");
         setCustomer(e.customer || null);
         setSettings(settingsRes.settings || {});
 
@@ -431,6 +433,16 @@ export default function EventDetails() {
     showSuccess("הוצאות הקרח עודכנו בהצלחה");
   };
 
+  const updateCarType = async (eventId, selectedCarType) => {
+    const res = await apiFetch(`/api/events/${eventId}/car-type`, {
+      method: "PUT",
+      body: JSON.stringify({ carType: selectedCarType }),
+    });
+    if (!res.ok) throw new Error("Failed to update car type");
+    setCarType(selectedCarType);
+    showSuccess("סוג הרכב עודכן בהצלחה");
+  };
+
   // alcohol-expense callbacks
 
   const createAlcoholExpense = async (eventId, payload) => {
@@ -587,6 +599,7 @@ export default function EventDetails() {
           inventoryProducts={inventoryProducts}
           expenseTypes={expenseTypes}
           iceExpenses={iceExpenses}
+          carType={carType}
           onCreateShift={createWageShift}
           onUpdateShift={updateWageShift}
           onDeleteShift={deleteWageShift}
@@ -595,6 +608,7 @@ export default function EventDetails() {
           onCreateExpenseType={createExpenseType}
           onDeleteGeneralExpense={deleteGeneralExpense}
           onUpdateIceExpenses={updateIceExpenses}
+          onUpdateCarType={updateCarType}
           onUpsertAlcoholExpense={createAlcoholExpense}
           onDeleteAlcoholExpense={deleteAlcoholExpense}
           onSaveActuals={saveEventActuals}

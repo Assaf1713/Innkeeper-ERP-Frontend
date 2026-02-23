@@ -144,6 +144,31 @@ export default function Expenses() {
     }
   };
 
+
+  const handleSavePrice = async (expenseId, newPrice) => {
+        try {
+      const res = await apiFetch(`/api/expenses/${expenseId}`, {
+        method: "PUT",
+        body: JSON.stringify({ price: newPrice }),
+      });
+      if (!res.ok) {
+        if (res.status === 403) {
+          throw new Error("אין לך הרשאות לעדכן את המחיר הזה");
+        }
+        throw new Error("שגיאה בעדכון המחיר");
+      }
+
+      const data = await res.json();
+      setExpenses((prev) =>
+        prev.map((e) => (e._id === expenseId ? data.expense : e))
+      );
+    } catch (err) {
+      console.error("Error updating price:", err);
+      showError(err.message);
+      throw err;
+    }
+  };
+
   // Toggle paid status for an expense
 
   const handleTogglePaid = async (expenseId, currentStatus) => {
@@ -163,6 +188,7 @@ export default function Expenses() {
       setExpenses((prev) =>
         prev.map((e) => (e._id === expenseId ? data.expense : e))
       );
+      showSuccess(`סטטוס התשלום עודכן בהצלחה ל${!currentStatus ? "שולם" : "לא שולם"}`);
     } catch (err) {
       console.error("Error updating payment status:", err);
       showError(err.message);
@@ -276,7 +302,13 @@ export default function Expenses() {
                   <td>{expense.name}</td>
                   <td>{expense.supplier || "-"}</td>
                   <td>{expense.category || "-"}</td>
-                  <td>{expense.price.toFixed(2)}</td>
+                  <td>
+                    <EditableCell
+                      value={expense.price.toFixed(2)}
+                      onSave={(newPrice) => handleSavePrice(expense._id, newPrice)}
+                      placeholder="-"
+                    />
+                  </td>
                   <td>
                     <input
                       type="checkbox"

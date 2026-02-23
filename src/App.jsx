@@ -16,6 +16,7 @@ import Employees from "./pages/Employees";
 import Employee from "./pages/Employee";
 import EventDetails from "./pages/EventDetails";
 import Shifts from "./pages/Shifts";
+import Reports from "./pages/Reports";
 import InventoryProducts from "./pages/InventoryProducts";
 import Leads from "./pages/Leads";
 import UnavailableDates from "./components/UnavailableDates";
@@ -118,6 +119,16 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
+
+              <Route
+                path="/admin/reports"
+                element={
+                  <ProtectedRoute>
+                    <Reports />
+                  </ProtectedRoute>
+                }
+              />
+
               <Route
                 path="/admin/events-made"
                 element={
@@ -129,7 +140,7 @@ export default function App() {
               <Route
                 path="/admin/unavailableDates"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
                     <UnavailableDates />
                   </ProtectedRoute>
                 }
@@ -137,7 +148,7 @@ export default function App() {
               <Route
                 path="/admin/settings"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
                     <Settings />
                   </ProtectedRoute>
                 }

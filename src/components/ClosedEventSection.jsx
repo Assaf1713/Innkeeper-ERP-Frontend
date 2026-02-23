@@ -321,7 +321,7 @@ export default function ClosedEventSection({
             type="button"
             onClick={() => setAddShiftFormOpen((p) => !p)}
           >
-            {AddShiftFormOpen ? "בטל" : "+"}
+            {AddShiftFormOpen ? "בטל" : " + הוסף "}
           </button>
         </div>
 
