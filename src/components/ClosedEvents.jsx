@@ -1,11 +1,11 @@
 // component that renders a table of all the closed events
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchEvents } from "../api/eventsApi";
 import { fetchUnavailableDates } from "../api/unavailableDatesApi";
 import { useAlert } from "../hooks/useAlert";
-import {useAuth} from "../hooks/useAuth";
 import { listPlannedShifts } from "../api/plannedShiftsApi";
+import Modal from "./Modal";
 import "../styles/ClosedEvents.css";
 
 export default function ClosedEvents() {
@@ -15,7 +15,8 @@ export default function ClosedEvents() {
   const { showAlert } = useAlert();
   const [plannedShiftsByEvent, setPlannedShiftsByEvent] = useState({});
   const [unavailableDates, setUnavailableDates] = useState([]);
-  const { user } = useAuth();
+  const staffSummaryModalRef = useRef(null);
+  const [selectedSummaryEventId, setSelectedSummaryEventId] = useState(null);
 
   // Format price as currency
   const formatPrice = (price) => {
@@ -54,7 +55,7 @@ export default function ClosedEvents() {
     return text.substring(0, maxLength) + "...";
   };
 
-  // generate palnned employee list and count
+  // generate planned employee list and count
 
   useEffect(() => {
     async function loadData() {
@@ -101,7 +102,7 @@ export default function ClosedEvents() {
 
     loadData();
     loadUnavailableDates();
-  }, []);
+  }, [showAlert]);
 
   const isDateUnavailable = (eventDate) => {
     if (!eventDate || unavailableDates.length === 0) return false;
@@ -111,7 +112,7 @@ export default function ClosedEvents() {
     );
   };
 
-  // Simple helper function (no hooks!)
+  
   const renderPlannedEmployees = (eventId) => {
     const shifts = plannedShiftsByEvent[eventId] || [];
     if (shifts.length === 0) return "-";
@@ -119,8 +120,58 @@ export default function ClosedEvents() {
     const employeeNames = shifts
       .map((shift) => shift.employee?.name)
       .join(", ");
-    return <span title={employeeNames}>{shifts.length}</span>;
+    return (
+      <button
+        type="button"
+        className="ce-summary-count-btn"
+        title={employeeNames || "הצג סיכום עובדים סגורים"}
+        onClick={() => openStaffSummaryModal(eventId)}
+      >
+        {shifts.length}
+      </button>
+    );
   };
+
+  const staffSummaryRows = useMemo(() => {
+    return events.map((ev) => {
+      const shifts = plannedShiftsByEvent[ev._id] || [];
+      const closedEmployees = shifts
+        .map((shift) => shift.employee?.name)
+        .filter(Boolean);
+      const promisedCount = Number(ev.promisedStaffCount) || 0;
+      const closedCount = closedEmployees.length;
+      const remainingCount = Math.max(promisedCount - closedCount, 0);
+
+      return {
+        eventId: ev._id,
+        eventNumber: ev.eventNumber,
+        eventDate: formatDate(ev.eventDate),
+        customerName: ev.customerName || "-",
+        closedEmployees,
+        closedCount,
+        promisedCount,
+        remainingCount,
+      };
+    });
+  }, [events, plannedShiftsByEvent]);
+
+  const openStaffSummaryModal = (eventId = null) => {
+    const normalizedEventId = typeof eventId === "string" ? eventId : null;
+    setSelectedSummaryEventId(normalizedEventId);
+    staffSummaryModalRef.current?.open();
+  };
+
+  const selectedSummaryRows = useMemo(() => {
+    if (!selectedSummaryEventId) return staffSummaryRows;
+    return staffSummaryRows.filter((row) => row.eventId === selectedSummaryEventId);
+  }, [selectedSummaryEventId, staffSummaryRows]);
+
+  const selectedSummaryTitle = useMemo(() => {
+    if (!selectedSummaryEventId) return "סיכום צוות סגור";
+    const row = staffSummaryRows.find((item) => item.eventId === selectedSummaryEventId);
+    if (!row) return "סיכום צוות סגור";
+    return `סיכום צוות סגור - אירוע #${row.eventNumber}`;
+  }, [selectedSummaryEventId, staffSummaryRows]);
 
 
   
@@ -182,7 +233,16 @@ export default function ClosedEvents() {
                   <th>סוג אירוע</th>
                   <th>הערות</th>
                   <th>כמות צוות עליה התחייבנו</th>
-                  <th>צוות סגור</th>
+                  <th>
+                    <button
+                      type="button"
+                      className="ce-summary-trigger"
+                      onClick={() => openStaffSummaryModal()}
+                      title="הצג סיכום עובדים סגורים"
+                    >
+                      צוות סגור
+                    </button>
+                  </th>
                   <th>קוקטיילים לאירוע</th>
                   <th>הכנסה צפויה</th>
                 </tr>
@@ -232,6 +292,33 @@ export default function ClosedEvents() {
           
         </div>
       )}
+
+      <Modal
+        ref={staffSummaryModalRef}
+        title={selectedSummaryTitle}
+        onClose={() => setSelectedSummaryEventId(null)}
+      >
+        {selectedSummaryRows.length === 0 ? (
+          <div>אין אירועים להצגה.</div>
+        ) : (
+          <div className="ce-summary-list">
+            {selectedSummaryRows.map((row) => (
+              <div key={row.eventId} className="ce-summary-item">
+                <div className="ce-summary-item__title">
+                  אירוע #{row.eventNumber} | {row.eventDate} | {row.customerName}
+                </div>
+                <div className="ce-summary-item__line">
+                  עובדים סגורים: {row.closedEmployees.length > 0 ? row.closedEmployees.join(", ") : "-"}
+                </div>
+                <div className="ce-summary-item__line">
+                  נסגרו: {row.closedCount} | התחייבנו: {row.promisedCount}
+                  {row.remainingCount > 0 ? ` | נותרו לסגירה: ${row.remainingCount}` : ""}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

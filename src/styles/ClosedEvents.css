@@ -37,7 +37,8 @@
   display: block;
   width: 100%;
   overflow-x: auto; /* Allow horizontal scroll */
-  overflow-y: visible;
+  overflow-y: auto;
+  max-height: 70vh;
   -webkit-overflow-scrolling: touch;
   
   /* Independent styling (not using globals) */
@@ -224,4 +225,54 @@
 .ce-copy-btn:active {
   transform: translateY(0);
   background-color: #f9fafb;
+}
+
+.ce-summary-trigger {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ce-summary-trigger:hover {
+  color: #007bff;
+}
+
+.ce-summary-count-btn {
+  border: 0;
+  background: transparent;
+  color: #007bff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ce-summary-count-btn:hover {
+  text-decoration: underline;
+}
+
+.ce-summary-list {
+  display: grid;
+  gap: 10px;
+}
+
+.ce-summary-item {
+  border: 1px solid #eaecf0;
+  border-radius: 8px;
+  padding: 10px;
+  background: #f9fafb;
+}
+
+.ce-summary-item__title {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.ce-summary-item__line {
+  font-size: 0.92rem;
+  color: #344054;
 }
