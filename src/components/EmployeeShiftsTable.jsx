@@ -66,7 +66,7 @@ export default function EmployeeShiftsTable({ shifts, viewMode }) {
                       to={`/events/${shift.event._id}`}
                       className="employee-shifts-table__link"
                     >
-                      {shift.event.eventNumber || "לקוח לא ידוע"}
+                      {shift.event.eventNumber || "אירוע לא ידוע"}
                     </Link>
                   ) : (
                     "-"

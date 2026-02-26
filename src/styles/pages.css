@@ -21,3 +21,10 @@
   margin-bottom: 16px;
   font-weight: 500;
 }
+
+.employee-page__table-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}

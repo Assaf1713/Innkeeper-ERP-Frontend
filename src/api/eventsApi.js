@@ -32,3 +32,14 @@ export const fetchClosedDates = async () => {
     const data = await response.json();
     return data;
 };
+
+
+// API to get predictive consumption data for an event
+export const fetchPredictiveConsumption = async (eventId) => {
+  const response = await apiFetch(`/api/events/${eventId}/predictive-consumption`);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch predictive consumption data for event with ID ${eventId}. Status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+};

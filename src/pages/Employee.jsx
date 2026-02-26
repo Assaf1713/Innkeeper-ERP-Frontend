@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -149,6 +150,39 @@ export default function Employee() {
     }
   };
 
+  const copyPlannedShiftListToClipBoard = () => {
+    const plannedShiftsText = shifts
+      .map((shift) => {
+        const dateOfEvent = shift.event?.eventDate
+          ? new Date(shift.event.eventDate).toLocaleDateString("he-IL")
+          : "תאריך לא ידוע";
+        const startTime = shift.startTime;
+        const endTime = shift.endTime;
+        const location =
+          shift.role === "manager"
+            ? "מחסן"
+            : shift.event?.address || " מיקום האירוע";
+
+        return `
+        תאריך משמרת: ${dateOfEvent}
+        שעת התחלה: ${startTime}
+        שעת סיום: ${endTime}
+        מיקום: ${location}
+        ${shift.notes ? `הערות: ${shift.notes}` : ""}
+
+        ----- `;
+      })
+      .join("\n");
+    navigator.clipboard.writeText(
+      `משמרות מתוכננות לעובד ${employee.name}:
+      ${plannedShiftsText} 
+     
+      קוד לבוש בנים : חולצה מכופתרת לבנה חלקה + מכנס ג'ינס שחור חלק ללא קרעים + חגרה 
+      קוד לבוש בנות : שמלה שחורה אלגנטית`,
+    );
+    showSuccess("רשימת המשמרות המתוכננות הועתקה ללוח");
+  };
+
   const displayedShifts = useMemo(() => {
     if (entryLimit === "all") return shifts;
     return shifts.slice(0, entryLimit);
@@ -212,8 +246,18 @@ export default function Employee() {
           />
         </FilterPanel>
 
-        <div className="table-info">
-          מציג {displayedShifts.length} מתוך {shifts.length} משמרות
+        <div className="table-info employee-page__table-info">
+          <span>
+            מציג {displayedShifts.length} מתוך {shifts.length} משמרות
+          </span>
+          {viewMode === "planned" && shifts.length > 0 && (
+            <button
+              className="btn btn-secondary"
+              onClick={copyPlannedShiftListToClipBoard}
+            >
+              📄 העתק רשימת משמרות לעובד
+            </button>
+          )}
         </div>
 
         <EmployeeShiftsTable shifts={displayedShifts} viewMode={viewMode} />

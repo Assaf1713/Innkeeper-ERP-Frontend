@@ -6,6 +6,7 @@ import EventEditForm from "../components/forms/EventEditForm.jsx";
 import ClosedEventSection from "../components/ClosedEventSection";
 import DoneEventSection from "../components/DoneEventSection/DoneEventSection.jsx";
 import EventPricingSection from "../components/EventPricingSection.jsx";
+import PredictiveConsumptionTable from "../components/PredictiveConsumptionTable.jsx";
 import CustomerAssignment from "../components/CustomerAssignment.jsx";
 import EventStatusBadge from "../components/EventStatusBadge.jsx";
 import { fetchCustomerById } from "../api/customersApi.js";
@@ -573,6 +574,9 @@ export default function EventDetails() {
         }
         settings={settings}
       />
+
+        <PredictiveConsumptionTable event={event} />
+
       {event.status.code === "CLOSED" ? (
         <ClosedEventSection
           event={event}

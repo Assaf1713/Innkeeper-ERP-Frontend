@@ -3,6 +3,7 @@ import { useAlert } from "../hooks/useAlert";
 import "../styles/ClosedEventSection.css";
 import EditableCell from "./EditableCell";
 import EntityComboboxWithModalCreate from "./ComboBox/EntityComboboxWithModalCreate";
+import EditPlannedShiftModal from "./forms/EditPlannedShiftModal";
 import { apiFetch } from "../utils/apiFetch";
 const ROLES = [
   { value: "manager", label: "מנהל" },
@@ -23,6 +24,9 @@ export default function ClosedEventSection({
   const eventId = event._id;
   const { showError, showSuccess } = useAlert();
   const [AddShiftFormOpen, setAddShiftFormOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editShift, setEditShift] = useState(null);
+  const [saving, setSaving] = useState(false);
 
   const [shiftForm, setShiftForm] = useState({
     employeeId: "",
@@ -64,6 +68,29 @@ export default function ClosedEventSection({
       setCreating(false);
       setAddShiftFormOpen(false);
     }
+  };
+
+  // Submit edit
+  const submitEdit = async (formData) => {
+    if (!onUpdateShift || !editShift) return;
+    setSaving(true);
+    try {
+      await onUpdateShift(editShift._id, formData);
+      closeEditModal();
+    } finally {
+      setSaving(false);
+      showSuccess("משמרת עודכנה בהצלחה");
+    }
+  };
+
+  const openEditModal = (shift) => {
+    setEditShift(shift);
+    setEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setEditShift(null);
+    setEditModalOpen(false);
   };
 
   const [form, setForm] = useState({
@@ -164,6 +191,29 @@ export default function ClosedEventSection({
     } finally {
       setSubmitting(false);
     }
+  };
+
+    const copyPlannedShiftDataToClipboard = (shift) => {
+    const dateOfEvent = shift.event?.eventDate || "TBD";
+    const startTime = shift.startTime || "TBD";
+    const endTime = shift.endTime || "TBD";
+    const location = shift.role === "manager" ? "מחסן" : shift.event?.address || "מיקום האירוע";
+        const shiftDetails = `
+        תאריך משמרת: ${dateOfEvent}
+        שעת התחלה: ${startTime}
+        שעת סיום: ${endTime}
+        מיקום: ${location}
+        ${shift.notes ? `הערות: ${shift.notes}` : ""}
+        ----- `;
+  
+    navigator.clipboard.writeText(
+      `היי, ${shift.employee?.name || "X"}, אלו פרטי המשמרת הקרובה שלך : 
+      ${shiftDetails} 
+     ___________
+      קוד לבוש בנים : חולצה מכופתרת לבנה חלקה + מכנס ג'ינס שחור חלק ללא קרעים + חגרה 
+      קוד לבוש בנות : שמלה שחורה אלגנטית`,
+    );
+    showSuccess("רשימת המשמרות המתוכננות הועתקה ללוח");
   };
 
   const calculateDuration = (startTime, endTime) => {
@@ -452,15 +502,33 @@ export default function ClosedEventSection({
                       />
                     </td>
                     <td>
-                      {onDeleteShift && (
+                      <div className="global-table__actions-spacer">
+                          <button
+                            className="ui-btn--edit_item"
+                            type="button"
+                            onClick={() => copyPlannedShiftDataToClipboard(s)}
+                            title="העתק פרטי משמרת"
+                          >
+                            📄  
+                          </button>
                         <button
-                          className="ui-btn--delete_item"
-                          onClick={() => onDeleteShift(s._id)}
+                          className="ui-btn--edit_item"
                           type="button"
+                          onClick={() => openEditModal(s)}
+                          title="ערוך משמרת"
                         >
-                          מחק
+                          ערוך
                         </button>
-                      )}
+                        {onDeleteShift && (
+                          <button
+                            className="ui-btn--delete_item"
+                            onClick={() => onDeleteShift(s._id)}
+                            type="button"
+                          >
+                            מחק
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -470,6 +538,15 @@ export default function ClosedEventSection({
         )}
       </div>
       <div style={{ height: "200px" }} />
+      {editModalOpen && (
+        <EditPlannedShiftModal
+          shift={editShift}
+          employees={employees}
+          onClose={closeEditModal}
+          onSave={submitEdit}
+          saving={saving}
+        />
+      )}
     </section>
   );
 }

@@ -60,7 +60,6 @@ export default function ClosedEvents() {
     async function loadData() {
       try {
         setLoading(true);
-        console.log("user looged in:", user);
         const eventsData = await fetchEvents();
         const closedEvents = eventsData
           .filter((ev) => ev.status?.code === "CLOSED")
