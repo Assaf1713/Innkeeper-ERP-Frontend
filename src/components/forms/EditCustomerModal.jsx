@@ -50,7 +50,7 @@ export default function EditCustomerModal({ customer, onClose, onSave }) {
   };
 
   return (
-    <div className="ui-modal-backdrop" onClick={onClose}>
+    <div className="ui-modal-backdrop">
       <div className="ui-modal" onClick={(e) => e.stopPropagation()}>
         <div className="ui-modal__header">
           <h2 className="ui-modal__title">עריכת לקוח</h2>

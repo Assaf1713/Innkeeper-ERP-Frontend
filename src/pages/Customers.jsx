@@ -17,7 +17,6 @@ import TableDropDownActionMenu from "../components/TableDropDownActionMenu.jsx";
 
 import EditCustomerModal from "../components/forms/EditCustomerModal";
 
-
 export default function Customers() {
   const { showSuccess, showError } = useAlert();
   const [customers, setCustomers] = useState([]);
@@ -29,7 +28,6 @@ export default function Customers() {
   const [entryLimit, setEntryLimit] = useState(20);
   const [showNewCustomerModal, setShowNewCustomerModal] = useState(false);
   const [activeFilter, setActiveFilter] = useState("all");
-  
 
   const HandleCustomerCreation = async (newCustomerData) => {
     try {
@@ -81,11 +79,8 @@ export default function Customers() {
       );
     });
 
-
-
     // Sort by payingCustomer first, then by IsBusiness
     return filtered.sort((a, b) => {
-
       // Not active customers go to the end
       if (a.isActive !== b.isActive) {
         return a.isActive ? -1 : 1;
@@ -131,9 +126,7 @@ export default function Customers() {
   const handleAbsoluteDelete = async (customerId) => {
     try {
       await deleteCustomer(customerId);
-      setCustomers((prev) =>
-        prev.filter((c) => c._id !== customerId)
-      );
+      setCustomers((prev) => prev.filter((c) => c._id !== customerId));
       showSuccess("הלקוח נמחק לצמיתות בהצלחה");
     } catch (err) {
       console.error("Error deleting customer:", err);
@@ -168,7 +161,9 @@ export default function Customers() {
         updatedCustomer,
       );
       setCustomers((prev) =>
-        prev.map((c) => (c._id === editingCustomer._id ? response.customer : c)),
+        prev.map((c) =>
+          c._id === editingCustomer._id ? response.customer : c,
+        ),
       );
       setShowEditModal(false);
       setEditingCustomer(null);
@@ -211,7 +206,7 @@ export default function Customers() {
             { value: "inactive", label: "לא פעיל" },
           ]}
         />
-        
+
         <FilterChooseEntryLimit
           value={entryLimit}
           onChange={(value) =>
@@ -261,21 +256,21 @@ export default function Customers() {
                         </button>
                       ) : (
                         <>
-                        <button
-                          onClick={() => handleRestoreCustomer(customer._id)}
-                          className="ui-btn--edit_item"
-                        >
-                          שחזר לקוח
-                        </button>
-                        <button
-                        onClick={()=>handleAbsoluteDelete(customer._id)}
-                        className="ui-btn--edit_item"
-                      >
-                        מחק לצמיתות
-                      </button>
-                      </>
+                          <button
+                            onClick={() => handleRestoreCustomer(customer._id)}
+                            className="ui-btn--edit_item"
+                          >
+                            שחזר לקוח
+                          </button>
+                          <button
+                            onClick={() => handleAbsoluteDelete(customer._id)}
+                            className="ui-btn--edit_item"
+                          >
+                            מחק לצמיתות
+                          </button>
+                        </>
                       )}
-                      
+
                       {customer.isActive && (
                         <button
                           onClick={() => handleDeactivateCustomer(customer._id)}
@@ -288,6 +283,10 @@ export default function Customers() {
                   </td>
                 </tr>
               ))}
+              <tr>
+                {/* Spacer row to ensure consistent height for the dropdown menu */}
+                <td colSpan="9" style={{ height: "120px" }}></td>
+              </tr>
             </tbody>
           </table>
         </div>

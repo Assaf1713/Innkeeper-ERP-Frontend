@@ -193,27 +193,35 @@ export default function ClosedEventSection({
     }
   };
 
-    const copyPlannedShiftDataToClipboard = (shift) => {
-    const dateOfEvent = shift.event?.eventDate || "TBD";
+  const copyPlannedShiftDataToClipboard = (shift) => {
+    const dateOfEvent = shift.event?.eventDate
+      ? new Date(shift.event.eventDate).toLocaleDateString("he-IL")
+      : "תאריך לא ידוע";
     const startTime = shift.startTime || "TBD";
     const endTime = shift.endTime || "TBD";
-    const location = shift.role === "manager" ? "מחסן" : shift.event?.address || "מיקום האירוע";
-        const shiftDetails = `
-        תאריך משמרת: ${dateOfEvent}
-        שעת התחלה: ${startTime}
-        שעת סיום: ${endTime}
-        מיקום: ${location}
-        ${shift.notes ? `הערות: ${shift.notes}` : ""}
-        ----- `;
-  
-    navigator.clipboard.writeText(
-      `היי, ${shift.employee?.name || "X"}, אלו פרטי המשמרת הקרובה שלך : 
-      ${shiftDetails} 
-     ___________
-      קוד לבוש בנים : חולצה מכופתרת לבנה חלקה + מכנס ג'ינס שחור חלק ללא קרעים + חגרה 
-      קוד לבוש בנות : שמלה שחורה אלגנטית`,
-    );
-    showSuccess("רשימת המשמרות המתוכננות הועתקה ללוח");
+    const location =
+      shift.role === "manager"
+        ? "מחסן"
+        : shift.event?.address || "מיקום האירוע";
+    const shiftDetails = [
+      `*תאריך משמרת:* ${dateOfEvent}`,
+      `*שעת התחלה:* ${startTime}`,
+      `*שעת סיום:* ${endTime}`,
+      `*מיקום:* ${location}`,
+      shift.notes ? `*הערות:* ${shift.notes}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const message = `היי ${shift.employee?.name || "X"},
+אלו פרטי המשמרת הקרובה שלך:
+${shiftDetails}
+
+*קוד לבוש בנים:* חולצה מכופתרת לבנה חלקה + מכנס ג'ינס שחור חלק ללא קרעים + חגורה
+*קוד לבוש בנות:* שמלה שחורה אלגנטית`;
+
+    navigator.clipboard.writeText(message);
+    showSuccess("פרטי המשמרת הועתקו ללוח בהצלחה");
   };
 
   const calculateDuration = (startTime, endTime) => {
@@ -503,14 +511,14 @@ export default function ClosedEventSection({
                     </td>
                     <td>
                       <div className="global-table__actions-spacer">
-                          <button
-                            className="ui-btn--edit_item"
-                            type="button"
-                            onClick={() => copyPlannedShiftDataToClipboard(s)}
-                            title="העתק פרטי משמרת"
-                          >
-                            📄  
-                          </button>
+                        <button
+                          className="ui-btn--edit_item"
+                          type="button"
+                          onClick={() => copyPlannedShiftDataToClipboard(s)}
+                          title="העתק פרטי משמרת"
+                        >
+                          📄
+                        </button>
                         <button
                           className="ui-btn--edit_item"
                           type="button"
